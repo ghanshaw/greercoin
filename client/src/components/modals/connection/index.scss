@@ -1,0 +1,41 @@
+@import '../../../constants.scss';
+
+.connection-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    p {
+        text-align: center;
+    }
+
+    .connecting {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            height: 1rem;
+            margin-right: 5px;
+        }
+    }
+
+
+    .error {
+        .title {
+            font-weight: bolder;
+        }
+
+        .message {
+            color: $error;
+        }
+        
+        p {
+            line-height: 1.1;
+            margin: 1rem 0rem;
+        }
+    }
+    
+}

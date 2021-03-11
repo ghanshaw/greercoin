@@ -1,0 +1,109 @@
+@import '../../constants.scss';
+
+.about {
+    width: 100%;
+    // margin: 0 auto;
+    overflow: scroll;
+    background: radial-gradient(circle at center, $secondary 0%, rgba(0, 0, 0, 0) 45%);
+    // margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+
+    .logo {
+        text-align: center;
+        margin-top: 80px;
+    }
+
+    p, h3, li {
+        line-height: 1.3;
+    }
+
+    p {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 24px;
+        font-weight: bolder;
+        // text-transform: uppercase;
+    }
+
+    li {
+        line-height: 2;
+        font-weight: bold;
+    }
+
+    
+
+    &.mdDown {
+        .about-scroller .about-content {
+            width: 80%;
+            
+        }
+    }
+
+    &.smDown {
+        .about-scroller .about-content {
+            width: 100%;
+            
+        }
+    }
+    
+
+    .about-scroller {
+        height: 100%;
+        overflow: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        .about-content {
+            width: 60%;
+            padding: 120px 0px 160px 0px;
+            // display: flex;
+            // justify-content: flex-start;
+            // align-items: center;
+            // flex-direction: column;
+
+            // p, h3, li, ul, ol {
+            //     text-align: left;
+            //     width: 100%;
+            // }
+
+
+        }
+
+        .camel {
+            text-transform: capitalize;
+        }
+    }
+
+
+
+    &:before {
+        content:'';
+        width:100%;
+        height:100%;    
+        position:absolute;
+        left:0;
+        top:0;
+        background:linear-gradient(0deg, transparent 85%, $tertiary);
+        pointer-events: none;
+    }
+
+    &:after {
+        content:'';
+        width:100%;
+        height:100%;    
+        position:absolute;
+        left:0;
+        bottom:0;
+        background:linear-gradient(transparent 600px, white);
+        background:linear-gradient(transparent 85%, $tertiary);
+        pointer-events: none;
+    }
+
+}

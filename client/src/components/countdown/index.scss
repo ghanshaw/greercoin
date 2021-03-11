@@ -1,0 +1,42 @@
+@import '../../constants.scss';
+
+.countdown_wrapper {
+    border: 5px solid $primary;
+    padding: 30px 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+
+    border: none;
+    background: white;
+
+    .countdown {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    
+        .num {
+    
+        }
+    
+        .counter_box {
+            text-align: center;
+            display: inline;
+            font-size: 40px;
+    
+            .value {
+                margin-bottom: 10px;
+                font-weight: 700;
+                font-family: 'Nunito';
+            }
+    
+            .text {
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+            .value, .text, .separator {
+                color: $black_text;
+            }
+        }
+    }
+}

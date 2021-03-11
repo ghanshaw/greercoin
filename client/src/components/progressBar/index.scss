@@ -1,0 +1,35 @@
+@import '../../constants.scss';
+
+.progress-bar {
+
+    .progress-bar_shell {
+        height: 40px;
+        border: 1px solid $primary;
+        border-radius: 20px;
+
+        background: white;
+        padding: 5px;
+        
+        .progress {
+            background: linear-gradient(90deg, $secondary, $primary);
+            height: 100%;
+            border-radius: 20px;
+            position: relative;
+            min-width: 40px;
+
+            .progress_label {
+                position: absolute;
+                right: 8px;
+                height: 30px;
+                font-size: 16px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                span {
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}
