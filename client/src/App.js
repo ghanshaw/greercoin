@@ -1,16 +1,12 @@
-import React, { Component, useState, useEffect, useContext, createContext } from "react";
+import React from "react";
 
 import "./App.scss";
-
-// import Homepage from './components/homepage';
-// import About from './components/about';
 
 // React-Router
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
 import Background from './components/background';
 import About from './components/about';
-import Homepage from './components/homepage';
 import Sale from './components/sale';
 import Header from './components/header';
 import Footer from './components/footer';
@@ -18,15 +14,18 @@ import Footer from './components/footer';
 import { useLayout } from './hooks';
 import LayoutContext from './context/layoutContext';
 
+import classnames from 'classnames';
+
 const App = () => {
-  const size = useLayout();
-  // const LayoutContext = useContext(LayoutContext);
+  const layout = useLayout();
+  
+  const appCss = classnames("app", layout);
 
   return (
-      <LayoutContext.Provider value={size}>
-        <div className="app">
+      <LayoutContext.Provider value={layout}>
+        <div className={appCss}>
             <Background />
-            <div className="content_wrapper">
+            <div className="content-container">
               <Router>
                 <Header />
 

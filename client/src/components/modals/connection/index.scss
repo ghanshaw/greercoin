@@ -12,13 +12,17 @@
 
     .connecting {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
 
         img {
             height: 1rem;
             margin-right: 5px;
+        }
+
+        p {
+            margin: 20px 0px 0px 0px;
         }
     }
 
@@ -37,5 +41,4 @@
             margin: 1rem 0rem;
         }
     }
-    
 }

@@ -1,18 +1,21 @@
-const GreercoinSale = artifacts.require("GreercoinSale");
-const Greercoin = artifacts.require("Greercoin");
+const GreerCoinIco = artifacts.require("GreerCoinIco");
+const GreerCoin = artifacts.require("GreerCoin");
+const settings = require('../constants/settings');
 
-contract("GreercoinSale", (accounts) => {
+contract("GreerCoinIco", (accounts) => {
     let tokenSaleContract;
     let tokenContract;
-    let tokenPrice = '4400000000000000';
-    let admin = accounts[0];
-    let buyer = accounts[1];
-    let numberOfTokens = 10;
-    let tokenAllocation = 5000;
-    let initialTokenBalance = 10000;
+
+    const tokenPurchase = 10;
+    const admin = accounts[0];
+    const buyer = accounts[1];
+    const args = settings.test;
+    const tokenPrice = args.token_price;
+    const initialSupply = args.initial_supply;
+    const icoSupply = args.ico_supply;
 
     it("initialized token sale contract with correct values", function() {
-        return GreercoinSale.deployed().then((instance) => {
+        return GreerCoinIco.deployed().then((instance) => {
             tokenSaleContract = instance;
             return tokenSaleContract.address;
         })
@@ -31,81 +34,76 @@ contract("GreercoinSale", (accounts) => {
     })
 
     it("facilitates token buying", function() {
-        return Greercoin.deployed().then((instance) => {
+        return GreerCoin.deployed().then((instance) => {
             tokenContract = instance;
-            return GreercoinSale.deployed();
+            return GreerCoinIco.deployed();
         })
         .then((instance) => {
             tokenSaleContract = instance;
             
             // Initial token allocation
-            return tokenContract.transfer(tokenSaleContract.address, tokenAllocation, { from: admin });
+            return tokenContract.transfer(tokenSaleContract.address, icoSupply, { from: admin });
         })
         .then((receipt) => {
             assert.equal(receipt.logs.length, 1, 'triggers one event');
             assert.equal(receipt.logs[0].event, 'Transfer', 'should be the "Transfer" event');
             assert.equal(receipt.logs[0].args._from, admin, 'event captures address of sender');
             assert.equal(receipt.logs[0].args._to, tokenSaleContract.address,  'event captures address of recipient');
-            assert.equal(receipt.logs[0].args._value, tokenAllocation, 'event captures the value of the transation');
+            assert.equal(receipt.logs[0].args._value, icoSupply, 'event captures the value of the transation');
 
-            let wei = numberOfTokens * tokenPrice;
-            return tokenSaleContract.buyTokens(numberOfTokens, { from: buyer, value: wei })
+            let wei = tokenPurchase * tokenPrice;
+
+            // Perform successful token purchase
+            return tokenSaleContract.buyTokens(tokenPurchase, { from: buyer, value: wei })
         })
         .then((receipt) => {
             assert.equal(receipt.logs.length, 1, 'triggers one event');
             assert.equal(receipt.logs[0].event, 'Sell', 'should be the "Sell" event');
             assert.equal(receipt.logs[0].args._buyer, buyer, 'event captures address of sender');
-            assert.equal(receipt.logs[0].args._units, numberOfTokens,  'event captures address of recipient');
+            assert.equal(receipt.logs[0].args._units, tokenPurchase,  'event captures address of recipient');
 
             return tokenSaleContract.tokensSold();            
         })
         .then((units) => {
-            assert.equal(units.toNumber(), numberOfTokens, 'increments the number of tokens sold');
+            assert.equal(units.toNumber(), tokenPurchase, 'increments the number of tokens sold');
 
             return tokenContract.balanceOf(buyer);
         })
         .then((balance) => {
             // Confirm token balance of buyer increased
-            assert.equal(balance.toNumber(), numberOfTokens, "increments the balance of the buyer");
+            assert.equal(balance.toNumber(), tokenPurchase, "increments the balance of the buyer");
 
             return tokenContract.balanceOf(tokenSaleContract.address);
         })
         .then((balance) => {
             // Confirm token balance of token sale contract decreased
-            assert.equal(balance.toNumber(), tokenAllocation - numberOfTokens, 'decrements the balance of the token sale contract');
+            assert.equal(balance.toNumber(), icoSupply - tokenPurchase, 'decrements the balance of the token sale contract');
 
-            return tokenSaleContract.buyTokens(numberOfTokens, { from: buyer, value: 1 });
+            // Attempt to buy x tokens with 1 wei
+            return tokenSaleContract.buyTokens(tokenPurchase, { from: buyer, value: 1 });
         })
         .then(assert.fail).catch((err) => {
-            // console.log(err);
             // Prevent token sale if wei sent by buyer is not sufficent
-            assert(err.message.indexOf('revert') >= 0, 'the value in wei must be sufficient to cover cost of tokens');
+            assert(err.message.indexOf('revert') >= 0, 'the client must send sufficent wei to cover token sale');
 
-            // Try to purchase more token than are available in contract
-            let units = BigInt(11000);
+            // Try to purchase more tokens than are available in contract
+            let units = BigInt(999999);
             let wei = units * BigInt(tokenPrice);
-            // let wei = Number(units * tokenPrice).toString();
 
-            console.log("wei: " + wei)
-            // let wei = web3.utils.toWei(units * tokenPrice, 'ether')
             return tokenSaleContract.buyTokens(units, { from: buyer, value: wei.toString() });
         })
         .then(assert.fail).catch((err) => {
-            // console.log(err);
+            // Prevent token sale if buyer attempt to purchase too many tokens
             assert(err.message.indexOf('revert') >= 0, 'the number of tokens purchased must not exceed available balance');
-
-            // Perform successful token purchase
-            // return tokenSaleContract.buyTokens(numberOfTokens, { from: buyer, value: 1 });
-            // return tokenContract.balanceOf(buyer)
         })
     });
 
 
     it("ends token sale", () => {
 
-        return Greercoin.deployed().then((instance) => {
+        return GreerCoin.deployed().then((instance) => {
             tokenContract = instance;
-            return GreercoinSale.deployed();
+            return GreerCoinIco.deployed();
         })
         .then((instance) => {
             tokenSaleContract = instance;
@@ -123,17 +121,8 @@ contract("GreercoinSale", (accounts) => {
             return tokenContract.balanceOf(admin);
         })
         .then(balance => {
-            assert.equal(initialTokenBalance - numberOfTokens, balance.toNumber());
-
-            // console.log(tokenSaleContract);
-            // return tokenSaleContract.tokenPrice();
+            // Confirm that balance of contract was sent to admin
+            assert.equal(initialSupply - tokenPurchase, balance.toNumber());
         })
-        // This test doesn't work anymore
-        // .then(price => {
-        //     assert.equal(price.toNumber(), 0, "should revert token price to default value");
-
-        //     // return tokenSaleContract.tokenPrice();
-        // })
-
     })
 });

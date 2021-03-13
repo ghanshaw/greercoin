@@ -13,7 +13,7 @@ export default (props) => {
         tokenPrice,
         account,
         greerCoin,
-        greerCoinIso,
+        greerCoinIco,
         tokensAvailableIco
     } = props;
     const [ units, setUnits ] = useState(1);
@@ -46,14 +46,14 @@ export default (props) => {
         
         const buyTokenTransaction =  async () => {
 
-            if (!greerCoin || !greerCoinIso || !buyTokenFlag) return;
+            if (!greerCoin || !greerCoinIco || !buyTokenFlag) return;
 
             setDisabled(false);
             setErrorMessage(null);
 
             let wei = units * tokenPrice;
 
-            let receipt = await greerCoinIso.methods.buyTokens(units)
+            let receipt = await greerCoinIco.methods.buyTokens(units)
                 .send({ value: wei, from: account })
                 .catch((err) => {
                     let message = err.message;
@@ -67,7 +67,7 @@ export default (props) => {
                 })
 
             console.log("Step 2")
-            await greerCoinIso.methods.tokensSold().call()
+            await greerCoinIco.methods.tokensSold().call()
                 .then((tokensSoldRes) => {
                     console.log(tokensSoldRes);
                     console.log("Step 4")

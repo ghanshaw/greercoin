@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-// import * as THREE from "three";
+import React, { useEffect } from 'react';
+
 
 import animate from './animation';
 import './index.scss';
 
 export default () => {
-
 
     useEffect(() => {
         // Pass background color as param

@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import './index.scss';
-
-import classnames from 'classnames';
-
-// import Button from '../button';
 
 export default (props) => {  
     const {
@@ -13,14 +9,16 @@ export default (props) => {
     }  = props;
 
     const closeModal = (ev) => {
-        let className = ev.target.className;
-        if (className.indexOf("modal_background") == -1) return;
         ev.stopPropagation();
+        
+        let className = ev.target.className;
+        if (className.indexOf("modal-background") === -1) return;
+        
         setModalOpen(false);
     }
 
     return (
-        <div className="modal_background" onClick={closeModal}>
+        <div className="modal-background" onClick={closeModal}>
             <div className="modal" >
                 {content}
             </div>

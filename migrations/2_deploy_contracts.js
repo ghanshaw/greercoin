@@ -1,27 +1,44 @@
 const GreerCoin = artifacts.require("GreerCoin");
-const GreerCoinIso = artifacts.require("GreerCoinIso");
+const GreerCoinIco = artifacts.require("GreerCoinIco");
 const settings = require('../constants/settings');
 
-module.exports = function (deployer) {
+module.exports = function(deployer, network) {
 
-  const tokenPrice = settings.test.token_price;
-  const initialSupply = settings.test.initial_supply;
-  const icoSupply = settings.test.ico_supply;
+  let greerCoinInstance;
+  let greerCoinIcoInstance;
+
   const name = settings.name;
   const symbol = settings.symbol;
-  let greerCoinInstance;
-  let greerCoinIsoInstance;
+  const decimals = settings.decimals;
+  const standard = settings.standard;
+  
+  let args = settings.test;
+  if (network === 'mainnet') {
+    args = settings.prod;
+  } 
 
-  deployer.deploy(GreerCoin, initialSupply, name, symbol, "GreerCoin v1.0")
+  const tokenPrice = args.token_price;
+  const initialSupply = args.initial_supply;
+  const icoSupply = args.ico_supply;
+
+  // console.log(deployer)  
+
+  // Deploy GreerCoin
+  deployer.deploy(GreerCoin, initialSupply, name, symbol, decimals, standard)
     .then((instance) => {
       greerCoinInstance = instance;
 
-      return deployer.deploy(GreerCoinIso, GreerCoin.address, tokenPrice)
+      // Deploy GreerCoinIco
+      return deployer.deploy(GreerCoinIco, GreerCoin.address, tokenPrice)
     })
     .then((instance) => {
-      greerCoinIsoInstance = instance;
+      greerCoinIcoInstance = instance;
 
-      return greerCoinInstance.transfer(greerCoinIsoInstance.address, icoSupply);
+      // Don't allocate coins during test
+      if (network === 'test')  return true;
+
+      // Transfer balance to GreerCoinIco
+      return greerCoinInstance.transfer(greerCoinIcoInstance.address, icoSupply);
     })
     .catch(err => {
       console.log(err);

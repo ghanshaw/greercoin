@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@900&family=Martel+Sans:wght@200;300;400;700;900&family=Nunito:wght@200;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@900&family=Martel+Sans:wght@200;300;400;700;900&family=Nunito:wght@200;400;600;700;900&display=swap');
 @import './constants.scss';
 
 body {
@@ -31,15 +31,12 @@ h1, h2, h3, h4, h5, h6, p, a, ul, li {
   }
 }
 
-// h2, h3, h4, h5, h6, p, span, a {
-//   font-family: 'Nunito';
-//   font-weight: 400;
-// }
-
 a {
   text-decoration: none;
   &:hover {
-    color: $primary_light;
+    color: white;
+    font-weight: 900;
+    text-decoration: underline;
   }
 }
 
@@ -55,15 +52,35 @@ html {
   }
 
   @media screen and (max-width: 959px) {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   @media screen and (max-width: 599px) {
-    font-size: 14px;
+    font-size: 16px;
   }
   
 }
 
 div {
   box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+
+  body {
+    height: 100%;
+
+    #root {
+      height: 100%;
+
+      .app {
+        height: 100%;
+
+        .content-container {
+          height: 100%;
+        }
+      }
+    }
+  }
 }

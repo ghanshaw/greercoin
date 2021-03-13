@@ -1,27 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './index.scss';
-// import classnames from classnames;
 
 export default (props) => {
-    // const [ progress, setProgress ] = useState(0);
-    let { tokensSold, tokensAvailableIco } = props;    
-
-    // const progress = Math.floor(tokensSold / (tokensSold + tokensAvailableIco));
-    // const progress = tokensSold / (Number(tokensSold) + Number(tokensAvailableIco));
-    // const num = tokensSold;
-    // const denom = (tokensSold + tokensAvailableIco);
-    // console.log(num, denom, num/denom)
-    
+    let { tokensSold, tokensAvailableIco } = props;        
 
     const getProgress = () => {
         tokensSold = Number.parseInt(tokensSold)
         tokensAvailableIco = Number.parseInt(tokensAvailableIco);
-        if (tokensAvailableIco > 0) {
-            // debugger;
+        if (tokensAvailableIco > 0 || tokensSold > 0) {
             return (tokensSold / (tokensSold + tokensAvailableIco)).toFixed(2);
-            // console.log(val);
-            // return val;
         }
         return 0
     }
@@ -32,7 +20,7 @@ export default (props) => {
         <div className="progress-bar">
             <div className="progress-bar_shell">
                 <div className="progress" style={{width: progressPct}}>
-                    <div className="progress_label"><span>{progressPct}</span></div>
+                    <div className="progress-label"><span>{progressPct}</span></div>
                     {/* <div>{progress}</div> */}
                 </div>
             </div>

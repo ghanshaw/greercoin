@@ -24,8 +24,8 @@
     }
 
     h3 {
-        font-size: 24px;
-        font-weight: bolder;
+        font-size: 30px;
+        font-weight: 900;
         // text-transform: uppercase;
     }
 
@@ -39,14 +39,15 @@
     &.mdDown {
         .about-scroller .about-content {
             width: 80%;
-            
         }
     }
 
     &.smDown {
+        overflow: initial;
+
         .about-scroller .about-content {
             width: 100%;
-            
+            padding-top: 140px;
         }
     }
     

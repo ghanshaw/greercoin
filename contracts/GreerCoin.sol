@@ -6,6 +6,7 @@ contract GreerCoin {
     string public symbol;
     string public standard;
 
+    uint8 public decimals;
     uint256 public totalSupply;
 
     mapping(address => uint256) public balanceOf;
@@ -23,12 +24,13 @@ contract GreerCoin {
         uint256 _value
     );
 
-    constructor(uint _initialSupply, string memory _name, string memory _symbol, string memory _standard) public {
+    constructor(uint _initialSupply, string memory _name, string memory _symbol, uint8 _decimals, string memory _standard) public {
         balanceOf[msg.sender] = _initialSupply;
         totalSupply = _initialSupply;
         name = _name;
         symbol = _symbol;
         standard = _standard;
+        decimals = _decimals;
     }
     
     function transfer(address _to, uint256 _value) public returns(bool success) {

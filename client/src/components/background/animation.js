@@ -8,7 +8,7 @@ const animate = (backgroundColor, pointColor) => {
     const points = [];
     const fov = 100;
     const dist = 100;
-    const opacity = 0.5;
+    // const opacity = 0.5;
     const particleSize = 2;
     const maxAmplitude = 1500; // Best results with values > 500
     const sideLength = 50; // How many particles per side

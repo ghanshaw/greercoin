@@ -1,10 +1,17 @@
 .app {
-  .content_wrapper {
-      height: 100vh;
+  .content-container {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       width: 80%;
       margin: 0 auto;
+      // height: -webkit-fill-available;
+      // height: 100vh;
+  }
+
+  &.smDown {
+    .content-container {
+      overflow: scroll;
+    }
   }
 }

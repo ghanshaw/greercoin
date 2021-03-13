@@ -1,22 +1,36 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { Link, useLocation } from 'react-router-dom';
+import classnames from 'classnames';
 
 import './index.scss';
-
-import { Link } from 'react-router-dom';
+import LayoutContext from '../../context/layoutContext';
 
 export default () => {
+    const layout = useContext(LayoutContext);
+    const location = useLocation();
+
+    const isAboutPage = () => {
+        return location && (location.pathname === '/about');
+    }
+
+    const aboutLinkCss = classnames('about-link', 'link', {
+        "active": isAboutPage()
+    })
+
+    const headerCss = classnames("header", layout);
 
     return (
-        <div className="header">
+        <div className={headerCss} >
             <Link to="/" >
                 <div className="brand">
-                    <img src='insular_g_svg.svg' />
-                    <p >GreerCoin</p>
+                    <img src='insular_g_svg.svg' alt=""/>
+                    <p>GreerCoin</p>
                 </div>
             </Link>
 
-            <Link to="/about" className="link">
-                <p className="link">About</p>
+            <Link to={isAboutPage() ? '/' : '/about'} className={aboutLinkCss}>
+                <p>About</p>
             </Link>
         </div>
     )

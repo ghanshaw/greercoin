@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
-export default () => {
-    const [ endDate, setEndDate ]  = useState(new Date(2022, 1, 1));
+export default (props) => {
+    const { endDate } = props;
     const [ currDate, setCurrDate ]  = useState(new Date());
 
-    const diff = Math.abs(currDate - endDate);    
+    const diff = Math.abs(endDate - currDate);    
     const one_second = 1000;
     const one_minute = one_second * 60;
     const one_hour = one_minute * 60;
     const one_day = one_hour * 24;
 
-    const getHours = () => {
+    const getDays = () => {
         return Math.floor(diff / one_day).toString().padStart(2, '0');
     }
 
-    const getDays = () => {
-        return Math.floor((diff % one_day) / one_hour).toString().padStart(2, '0');;
+    const getHours = () => {
+        return Math.floor((diff % one_day) / one_hour).toString().padStart(2, '0');
     }
 
     const getMinutes = () => {
@@ -40,7 +40,7 @@ export default () => {
         <div className="countdown_wrapper">
             <div className="countdown">
                 <div className="days counter_box">
-                    <div className="value">{getHours()}</div>
+                    <div className="value">{getDays()}</div>
                     <div className="text">DAYS</div>
                 </div>
 
@@ -50,7 +50,7 @@ export default () => {
                 
 
                 <div className="hours counter_box">
-                    <div className="value">{getDays()}</div>
+                    <div className="value">{getHours()}</div>
                     <div className="text">HOURS</div>
                 </div>
 
@@ -74,5 +74,4 @@ export default () => {
             </div>
         </div>
     )
-
 }

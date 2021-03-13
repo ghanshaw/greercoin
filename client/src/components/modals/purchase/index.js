@@ -3,26 +3,33 @@ import React, { useState, useEffect } from 'react';
 import './index.scss';
 import Button from '../../button';
 
+import classnames from 'classnames';
+
+
 const PurchaseModal = (props) => {
     const { 
-        openModal, 
-        setOpenModal, 
         tokenPrice,
         account,
+        setTxHash,
+        units,
+        setUnits,
         greerCoin,
-        greerCoinIso,
-        tokensAvailableIco
+        greerCoinIco,
+        tokensAvailableIco,
+        setPurchaseModalOpen,
+        setConfirmationModalOpen, 
     } = props;
-    const [ units, setUnits ] = useState(1);
+
     const [ buyTokenFlag, setBuyTokenFlag ] = useState(false);
     const [ errorMessage, setErrorMessage ] = useState(null);
-    const [ disabled, setDisabled ] = useState(false);
+    const [ disabled, setDisabled ] = useState(true);
     const [ processing, setProcessing ] = useState(false);
 
     const [ tokensSold, setTokensSold ] = useState(0);
-
+    
 
     const getEthValue = () => {
+        if (!units || errorMessage) return <span className="placeholder">{(0).toFixed(2)}</span>;
         return (Math.max(units * .0044, 0)).toFixed(4);
     }
 
@@ -38,7 +45,7 @@ const PurchaseModal = (props) => {
             setErrorMessage("Please enter valid integer value.");
             setDisabled(true);
         }
-        else if (newUnits == 0) {
+        else if (newUnits === 0) {
             setErrorMessage("Please select at least 1 GreerCoin.");
             setDisabled(true);
         }
@@ -56,31 +63,28 @@ const PurchaseModal = (props) => {
         
         const buyTokenTransaction =  async () => {
 
-            if (!greerCoin || !greerCoinIso || !buyTokenFlag) return;
+            if (!greerCoin || !greerCoinIco || !buyTokenFlag) return;
 
             setDisabled(false);
             setErrorMessage(null);
-
-            setProcessing(true)
+            setProcessing(true);
 
             let wei = units * tokenPrice;
 
-            let receipt = await greerCoinIso.methods.buyTokens(units)
+            await greerCoinIco.methods.buyTokens(units)
                 .send({ value: wei, from: account })
+                .on("transactionHash", (txHash) => {
+                    setTxHash(txHash);
+                    setPurchaseModalOpen(false);
+                    setConfirmationModalOpen(true);
+                })
                 .catch((err) => {
                     setProcessing(false);
-                    let message = err.message;
-                    let colon = message.indexOf(':');
-                    if (colon >= 0) {
-                        message = message.substring(colon+1);
-                    }
-                    message = `${message} Please try again.`
-                    setErrorMessage(message);
                     console.log(err);
+                    setErrorMessage("Transaction failed. Please check console or try again.");
                 })
 
-            console.log("Step 2")
-            await greerCoinIso.methods.tokensSold().call()
+            await greerCoinIco.methods.tokensSold().call()
                 .then((tokensSoldRes) => {
                     console.log(tokensSoldRes);
                     console.log("Step 4")
@@ -90,46 +94,69 @@ const PurchaseModal = (props) => {
                     console.log(err);
                 })
 
-            console.log("Step 3")
             setBuyTokenFlag(false);
         }
 
         buyTokenTransaction();
 
-    }, [ buyTokenFlag ]);
+    }, [ buyTokenFlag, greerCoin, greerCoinIco ]);
 
     const sendBuyTokens = (ev) => {
         ev.stopPropagation();
+
+        if (Boolean(errorMessage) || !units) return;
         setBuyTokenFlag(true);
     }
 
+    const statusCss = classnames("status", {
+        show: Boolean(errorMessage)
+    })
+
     return (
         <div className="purchase-modal">
-            <p>How many GRC do you want to purchase?</p>
-
-            <div className="input-purchase">
-                <div className="left">
-                {/* <span class="input" role="textbox" contenteditable>{units}</span> */}
-                    <input type="number" value={units} onChange={updateUnits} />
-                    <span> GRC </span>
-                </div>
-
-                <div className="right">
-                    <span>= {`${getEthValue()} ETH`}</span> 
-                </div>
+            <div className="header">
+                <p>Trade</p>
             </div>
 
-            
-            <div className="status">
-                {errorMessage && <p className="error">{`* ${errorMessage}`}</p>}
+            <div className="trade">
+                    
+                <div className="quantity">
+                    <div className="label">Quantity</div>
+                    <div className="value">
+                        <input 
+                            pattern="^[0-9]*$"
+                            type="number" 
+                            value={units} 
+                            placeholder="0"
+                            onChange={updateUnits} />
+                        <div className="currency">GRC</div>
+                    </div>
+                </div>
 
-                {processing && <img src="spinner.svg" />}
+                <div className="arrow">
+                    <img src="down_arrow.svg" alt="" />
+                </div>
+
+                <div className="price">
+                    <div className="label">Price</div>
+                    <div className="value">
+                        <p className="num">{getEthValue()}</p>
+
+                        <div className="currency">ETH</div>
+                    </div>
+                </div>
             </div>
-
             
+            <div className={statusCss}>
+                {errorMessage && <p className="error">{`${errorMessage}`}</p>}
+            </div>
 
             <div className='button-wrapper'>
-                <Button onClick={sendBuyTokens} cta={"Confirm"} disabled={disabled} invert/>
+                <Button 
+                    minWidth="120px"
+                    onClick={sendBuyTokens} 
+                    cta={processing ? <img src="spinner_white.svg" alt="" /> : "Confirm"} 
+                    disabled={disabled} invert/>
             </div>
         </div>
     )

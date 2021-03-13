@@ -1,3 +1,5 @@
+@import '../../constants.scss';
+
 .header {
     display: flex;
     flex-direction: row;
@@ -30,7 +32,27 @@
     }
 
     .link {
-        font-size: 18px;
-        font-weight: bolder;
+        justify-content: flex-end;
+
+        p {
+            font-size: 18px;
+            font-weight: bolder;
+        }
+
+        &.active {
+            p {
+                font-weight: 900;
+                position: relative;
+                left: 2px;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &.smDown {
+        position: fixed;
+        background: $tertiary;
+        z-index: 10000;
+        width: 80%;
     }
 }

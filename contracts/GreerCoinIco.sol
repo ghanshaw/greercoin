@@ -2,7 +2,7 @@ pragma solidity >=0.4.22 <0.9.0;
 
 import "./GreerCoin.sol";
 
-contract GreerCoinIso {
+contract GreerCoinIco {
 
     GreerCoin public tokenContract;
 
@@ -67,6 +67,4 @@ contract GreerCoinIso {
         // Destroy contract
         selfdestruct(admin);
     }
-
-
 }

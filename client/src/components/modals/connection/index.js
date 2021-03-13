@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './index.scss';
 
@@ -11,7 +11,7 @@ const ConnectionModal = (props) => {
         <div className="connection-modal">
             {!web3Error ?
                 <div className="connecting">
-                    <img src="spinner.svg" />
+                    <img src="spinner.svg" alt=""/>
                     <p>Check MetaMask to finish connecting...</p>
                 </div> :
                 <div className="error">

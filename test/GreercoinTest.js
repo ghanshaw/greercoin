@@ -1,16 +1,19 @@
-const Greercoin = artifacts.require("Greercoin");
+const GreerCoin = artifacts.require("GreerCoin");
+const settings = require('../constants/settings');
 
-contract("Greercoin", (accounts) => {
-    let initialSupply = 10000;
-    let tokenInstance;
-    let name = "Greercoin";
-    let symbol = "GRC";
-    let standard = "Greercoin v1.0";
+contract("GreerCoin", (accounts) => {    
     let _transferValue = 2500;
     let _allowance = 100;
 
+    let tokenInstance;
+    const name = settings.name;
+    const symbol = settings.symbol;
+    const standard = settings.standard;
+    const decimals = settings.decimals;    
+    const initialSupply = settings.test.initial_supply;
+
     it("intializes contract with the correct values", function() {
-        return Greercoin.deployed().then((instance) => {
+        return GreerCoin.deployed().then((instance) => {
             tokenInstance = instance;
             return tokenInstance.name();
         })
@@ -24,26 +27,31 @@ contract("Greercoin", (accounts) => {
         })
         .then((_standard) => {
             assert.equal(standard, _standard, 'has the correct standard')
+            return tokenInstance.decimals();
+        })
+        .then((_decimals) => {
+            assert.equal(decimals, _decimals, 'has the correct decimals')
         })
     })
 
 
     it("allocates initial supply on deployment", function() {
-        return Greercoin.deployed().then((instance) => {
+        return GreerCoin.deployed().then((instance) => {
             tokenInstance = instance;
             return tokenInstance.totalSupply();
         })
         .then((totalSupply) => {
-            assert.equal(totalSupply.toNumber(), initialSupply, 'sets the total supply to 56789')
+            assert.equal(totalSupply.toNumber(), initialSupply, `sets the total supply to ${initialSupply}`)
             return tokenInstance.balanceOf(accounts[0]);
         })
         .then((adminBalance) => {
-            assert.equal(adminBalance, initialSupply, "allocates the initial supply to the admin")
+            assert.equal(adminBalance.toNumber(), initialSupply, "admin has initial supply less ico supply after migration")
         })
     })
+    
 
     it('transfers token ownership', function() {
-        return Greercoin.deployed().then((instance) => {
+        return GreerCoin.deployed().then((instance) => {
             tokenInstance = instance;
 
             // Transfer large amount to a test account
@@ -78,12 +86,10 @@ contract("Greercoin", (accounts) => {
             assert.equal(balance.toNumber(), initialSupply - _transferValue, "deducts amount from admina account");
             return tokenInstance.balanceOf(accounts[0])
         })
-        
-
     })
 
     it("approves tokens for delegated transfer", function() {
-        return Greercoin.deployed().then((instance) => {
+        return GreerCoin.deployed().then((instance) => {
             let tokenInstance = instance;
 
             return tokenInstance.approve.call(accounts[1], _allowance);
@@ -93,7 +99,6 @@ contract("Greercoin", (accounts) => {
             return tokenInstance.approve(accounts[1], _allowance);
         })
         .then(receipt => {
-            // console.log(receipt);
             assert.equal(receipt.logs.length, 1, 'triggers one event');
             assert.equal(receipt.logs[0].event, 'Approval', 'should be the "Transfer" event');
             assert.equal(receipt.logs[0].args._owner, accounts[0], 'event captures address of owner');
@@ -112,7 +117,7 @@ contract("Greercoin", (accounts) => {
     let adminAccount;
 
     it("handles tokens for delegated transfer", function() {
-        return Greercoin.deployed().then((instance) => {
+        return GreerCoin.deployed().then((instance) => {
             let tokenInstance = instance;
             adminAccount = accounts[0]
             fromAccount = accounts[2];
@@ -167,7 +172,5 @@ contract("Greercoin", (accounts) => {
         .then(allowance => {
             assert.equal(allowance.toNumber(), 5, "deducts amount from the allowance");
         })
-
     })
-
 })
