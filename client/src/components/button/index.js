@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import './index.scss';
 import classnames from 'classnames';
 
-import LayoutContext from '../../context/layoutContext';
+import LayoutContext from 'context/layoutContext';
 
 export default (props) => {
     const { cta, invert, disabled, onClick, minWidth } = props;

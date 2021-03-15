@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 
 import './index.scss';
 import classnames from 'classnames';
-import LayoutContext from '../../context/layoutContext';
+import LayoutContext from 'context/layoutContext';
 
-import * as links from '../../constants/links';
+import * as links from 'constants/links';
 
-import GreerCoinContract from "../../contracts/GreerCoin.json";
+import GreerCoinContract from "contracts/GreerCoin.json";
 
-import { networkIds } from '../../constants/app';
+import { networkIds } from 'constants/app';
 
 
 export default () => {

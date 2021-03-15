@@ -2,10 +2,8 @@ import React from 'react';
 
 import './index.scss';
 
-import { etherscan } from '../../../constants/links';
-
-const MAINNET_ID = 1; 
-const ROPSTEN_ID = 3;
+import { etherscan } from 'constants/links';
+import { networkIds } from 'constants/app';
 
 const ConfirmationModal = (props) => {            
     const { 
@@ -19,18 +17,18 @@ const ConfirmationModal = (props) => {
     const getTxUrl = () => {
 
         let url;
-        if (networkId === ROPSTEN_ID) {
+        if (networkId === networkIds.ROPSTEN) {
             url = etherscan.tx.ropsten + txHash;
-        } else if (networkId === MAINNET_ID) {
+        } else if (networkId === networkIds.MAINNET) {
             url = etherscan.tx.mainnet + txHash;
         }
         return url;
     }
 
     const getWaitTime = () => {
-        if (networkId === ROPSTEN_ID) {
-            return '<1 minute';
-        } else if (networkId === MAINNET_ID) {
+        if (networkId === networkIds.ROPSTEN) {
+            return '1 - 2 minutes';
+        } else if (networkId === networkIds.MAINNET) {
             return '15 - 20 minutes'
         }
     }
@@ -45,9 +43,9 @@ const ConfirmationModal = (props) => {
             <div className="check">
                 <img src="checkmark.svg" alt="" />
             </div>
-            <p className="thank-you">Success! You purchased {units} GreerCoin</p>
+            <p className="thank-you">Success! You purchased {units.toLocaleString()} GreerCoin</p>
 
-            <p className="message">Your is being confirmed on the {networkName}. Please allow {getWaitTime()} for transaction to reflect.</p>
+            <p className="message">Your transaction is being confirmed on {networkId > 1000 ? 'a' : 'the'} {networkName} network. Please allow {getWaitTime()} for it to reflect.</p>
 
             <p className="tx-link"><a href={getTxUrl()} target="_blank" rel="noopener noreferrer" >View Transaction</a> </p>
         </div>

@@ -5,14 +5,14 @@ import "./App.scss";
 // React-Router
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
-import Background from './components/background';
-import About from './components/about';
-import Landing from './components/landing';
-import Header from './components/header';
-import Footer from './components/footer';
+import Background from 'components/background';
+import About from 'components/about';
+import Landing from 'components/landing';
+import Header from 'components/header';
+import Footer from 'components/footer';
 
-import { useLayout } from './hooks';
-import LayoutContext from './context/layoutContext';
+import { useLayout } from 'hooks';
+import LayoutContext from 'context/layoutContext';
 
 import classnames from 'classnames';
 

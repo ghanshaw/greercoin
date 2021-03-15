@@ -8,22 +8,22 @@ import Web3 from "web3";
 import classnames from 'classnames';
 
 // Contract ABIs
-import GreerCoinContract from "../../contracts/GreerCoin.json";
-import GreerCoinSaleContract from "../../contracts/GreerCoinSale.json";
+import GreerCoinContract from "contracts/GreerCoin.json";
+import GreerCoinSaleContract from "contracts/GreerCoinSale.json";
 
 // Components
-import Button from '../button';
-import Countdown from '../countdown';
-import ProgressBar from '../progressBar';
+import Button from 'components/button';
+import Countdown from 'components/countdown';
+import ProgressBar from 'components/progressBar';
 
 // Context
-import LayoutContext from '../../context/layoutContext';
+import LayoutContext from 'context/layoutContext';
 
 // Modals
-import Modal from '../modals';
-import ConnectionModal from '../modals/connection';
-import PurchaseModal from '../modals/purchase';
-import ConfirmationModal from '../modals/confirmation';
+import Modal from 'components/modals';
+import ConnectionModal from 'components/modals/connection';
+import PurchaseModal from 'components/modals/purchase';
+import ConfirmationModal from 'components/modals/confirmation';
 
 export default (props) => {
     const layout = useContext(LayoutContext);

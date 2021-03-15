@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import './index.scss';
-import Button from '../../button';
+import Button from 'components/button';
 
 import classnames from 'classnames';
 

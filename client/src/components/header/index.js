@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import classnames from 'classnames';
 
 import './index.scss';
-import LayoutContext from '../../context/layoutContext';
+import LayoutContext from 'context/layoutContext';
 
 export default () => {
     const layout = useContext(LayoutContext);

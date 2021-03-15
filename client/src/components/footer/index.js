@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import './index.scss';
 
-import * as links from '../../constants/links';
+import * as links from 'constants/links';
 
-import LayoutContext from '../../context/layoutContext';
+import LayoutContext from 'context/layoutContext';
 import classnames from 'classnames';
 
 export default () => {
