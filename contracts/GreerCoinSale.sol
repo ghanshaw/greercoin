@@ -2,7 +2,7 @@ pragma solidity >=0.4.22 <0.9.0;
 
 import "./GreerCoin.sol";
 
-contract GreerCoinIco {
+contract GreerCoinSale {
 
     GreerCoin public tokenContract;
 
@@ -61,10 +61,10 @@ contract GreerCoinIco {
         // Only allow admin to send sale
         require(msg.sender == admin, "only admin can end sale");
 
-        // Transfer remaining dapp tokens back to admin
+        // Transfer remaining tokens back to admin
         require(tokenContract.transfer(admin, tokenContract.balanceOf(address(this))), "must transfer remaining balance back to admin");
 
-        // Destroy contract
-        selfdestruct(admin);
+        // Transfer ETH back to admin
+        admin.transfer(address(this).balance);
     }
 }

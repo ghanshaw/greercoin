@@ -24,7 +24,7 @@ export default () => {
         <div className={headerCss} >
             <Link to="/" >
                 <div className="brand">
-                    <img src='insular_g_svg.svg' alt=""/>
+                    <img src='logo_white.svg' alt=""/>
                     <p>GreerCoin</p>
                 </div>
             </Link>

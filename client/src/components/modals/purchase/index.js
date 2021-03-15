@@ -9,13 +9,14 @@ import classnames from 'classnames';
 const PurchaseModal = (props) => {
     const { 
         tokenPrice,
+        tokenPriceETH,
         account,
         setTxHash,
         units,
         setUnits,
         greerCoin,
-        greerCoinIco,
-        tokensAvailableIco,
+        greerCoinSale,
+        tokensAvailableSale,
         setPurchaseModalOpen,
         setConfirmationModalOpen, 
     } = props;
@@ -25,12 +26,9 @@ const PurchaseModal = (props) => {
     const [ disabled, setDisabled ] = useState(true);
     const [ processing, setProcessing ] = useState(false);
 
-    const [ tokensSold, setTokensSold ] = useState(0);
-    
-
     const getEthValue = () => {
         if (!units || errorMessage) return <span className="placeholder">{(0).toFixed(2)}</span>;
-        return (Math.max(units * .0044, 0)).toFixed(4);
+        return (Math.max(units * tokenPriceETH, 0)).toFixed(4);
     }
 
     const updateUnits = (event) => {
@@ -53,7 +51,7 @@ const PurchaseModal = (props) => {
             setErrorMessage("You cannot buy a negative quantity.");
             setDisabled(true);
         }
-        else if (newUnits > tokensAvailableIco) {
+        else if (newUnits > tokensAvailableSale) {
             setErrorMessage("Not enough GreerCoins available.");
             setDisabled(true);
         }
@@ -63,7 +61,7 @@ const PurchaseModal = (props) => {
         
         const buyTokenTransaction =  async () => {
 
-            if (!greerCoin || !greerCoinIco || !buyTokenFlag) return;
+            if (!greerCoin || !greerCoinSale || !buyTokenFlag) return;
 
             setDisabled(false);
             setErrorMessage(null);
@@ -71,7 +69,7 @@ const PurchaseModal = (props) => {
 
             let wei = units * tokenPrice;
 
-            await greerCoinIco.methods.buyTokens(units)
+            await greerCoinSale.methods.buyTokens(units)
                 .send({ value: wei, from: account })
                 .on("transactionHash", (txHash) => {
                     setTxHash(txHash);
@@ -84,22 +82,12 @@ const PurchaseModal = (props) => {
                     setErrorMessage("Transaction failed. Please check console or try again.");
                 })
 
-            await greerCoinIco.methods.tokensSold().call()
-                .then((tokensSoldRes) => {
-                    console.log(tokensSoldRes);
-                    console.log("Step 4")
-                    setTokensSold(tokensSoldRes);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-
             setBuyTokenFlag(false);
         }
 
         buyTokenTransaction();
 
-    }, [ buyTokenFlag, greerCoin, greerCoinIco ]);
+    }, [ buyTokenFlag, greerCoin, greerCoinSale ]);
 
     const sendBuyTokens = (ev) => {
         ev.stopPropagation();

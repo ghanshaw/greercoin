@@ -1,6 +1,6 @@
 /**
  * bc: backgroundColor
- * dc: dotColor
+ * dc: pointColor
  */
 const animate = (backgroundColor, pointColor) => {
     const canvas = document.getElementById("scene");
@@ -67,24 +67,13 @@ const animate = (backgroundColor, pointColor) => {
     };
     Vector3.prototype.draw = function() {
         const frac = this.y / maxAmplitude;
-        // debugger;
-        // if (!dotColor) {
-        //     dotColor = {
-        //         r: Math.floor(frac * 100),
-        //         g: 20,
-        //         b: Math.floor(255 - frac * 100)
-        //     }
-        // }
         
         const r = (pointColor && pointColor.r) || Math.floor(frac * 100);
         const g = (pointColor && pointColor.g) || 20;
         const b = (pointColor && pointColor.b) || Math.floor(255 - frac * 100);
         const vec = this.rotateX(rotXCounter).rotateY(rotYCounter).rotateZ(rotZCounter).perspectiveProjection(fov, dist);
 
-        // this.color = `rgb(${dotColor.r}, ${dotColor.g}, ${dotColor.b})`;
-        // console.log(this.color)
         this.color = `rgb(${r}, ${g}, ${b})`;
-        // console.log(this.color)
         ctx.fillStyle = this.color;
         ctx.fillRect(vec.x, vec.y, particleSize, particleSize);
     };
@@ -103,9 +92,6 @@ const animate = (backgroundColor, pointColor) => {
 
     (function loop() {
         const bc = backgroundColor;
-        // debugger;
-        // ctx.fillStyle = `rgba(${bc.r}, ${bc.g}, ${bc.b}, ${opacity})`;
-        // ctx.fillStyle =  "linear-gradient(90deg, rgba(114,76,253,1) 0%, rgba(19,127,237,1) 100%)";
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = 'transparent';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -123,13 +109,9 @@ const animate = (backgroundColor, pointColor) => {
             points[i].draw();
         }
         counter += 0.01;
-        // counter += 0.03;
-
-        // rotXCounter += 0.005;
-        // rotYCounter += 0.005;
         rotXCounter += 0.0005;
         rotYCounter += 0.0005;
-        // rotZCounter += 0.005;
+        // rotZCounter += 0.0005;
 
         window.requestAnimationFrame(loop);
     })();

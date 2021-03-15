@@ -1,11 +1,10 @@
 const path = require("path");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const mnemonic = require('./constants/mnemonic');
-const settings = require('./constants/settings');
+
+require('dotenv').config()
+const constants = require('./constants');
 
 module.exports = {
-  // See <http://truffleframework.com/docs/advanced/configuration>
-  // to customize your Truffle configuration!
   contracts_build_directory: path.join(__dirname, "client/src/contracts"),
   networks: {
     develop: {
@@ -15,13 +14,14 @@ module.exports = {
     },
     mainnet: {
       provider: function() {
-        return new HDWalletProvider(mnemonic.mainnet, settings.infura.endpoint.mainnet)
+        return new HDWalletProvider(process.env.MNENOMIC_MAINNET, constants.infura.endpoint.mainnet + process.env.INFURA_API_KEY)
       },
-      network_id: 1
+      network_id: 1,
+      gasPrice: 80000000000
     },
     ropsten: {
       provider: function() {
-        return new HDWalletProvider(mnemonic.ropsten, settings.infura.endpoint.ropsten)
+        return new HDWalletProvider(process.env.MNENOMIC_ROPSTEN, constants.infura.endpoint.ropsten + process.env.INFURA_API_KEY)
       },
       network_id: 3
     }

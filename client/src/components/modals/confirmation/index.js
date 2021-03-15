@@ -20,9 +20,9 @@ const ConfirmationModal = (props) => {
 
         let url;
         if (networkId === ROPSTEN_ID) {
-            url = etherscan.ropsten + txHash;
+            url = etherscan.tx.ropsten + txHash;
         } else if (networkId === MAINNET_ID) {
-            url = etherscan.mainnet + txHash;
+            url = etherscan.tx.mainnet + txHash;
         }
         return url;
     }

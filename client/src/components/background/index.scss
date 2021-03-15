@@ -5,10 +5,6 @@
     top: 0;
     left: 0;
     z-index: -1000;
-    background: linear-gradient( 90deg , rgb(114, 76, 253) 0%, rgb(19, 127, 237) 100%);
-    background: linear-gradient( 90deg , rgb(68, 68, 163) 0%, rgb(20, 100, 147) 100%);
-    background: linear-gradient( -45deg , rgb(62, 62, 148) 0%, rgb(15, 142, 173) 100%);
-    background: radial-gradient(rgb(73,38,61) 5%, rgb(34,24,55) 25%, rgb(7, 8, 20) 60%);
     background: radial-gradient($primary 5%, $secondary 25%, $tertiary 60%);
     height: 100%;
 

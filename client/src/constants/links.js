@@ -14,6 +14,13 @@ const etherscan = {
 const metamask = "https://metamask.io/";
 const cryptocompare = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR";
 const canvasFiddle = "https://codepen.io/funxer/pen/Zvjebx";
+const truffle = "https://www.trufflesuite.com/";
+const solidity = "https://docs.soliditylang.org/en/v0.8.2/";
+const ganache = "https://www.trufflesuite.com/ganache";
+const infura = "https://infura.io/";
+const web3 = "https://web3js.readthedocs.io/en/v1.3.4/";
+const etherFacet = "https://faucet.ropsten.be/";
+const coinbase = "https://www.coinbase.com/";
 
 export {
     github,
@@ -22,5 +29,12 @@ export {
     etherscan,
     metamask,
     cryptocompare,
-    canvasFiddle
+    canvasFiddle,
+    truffle,
+    solidity,
+    ganache,
+    infura,
+    etherFacet,
+    coinbase,
+    web3
 }

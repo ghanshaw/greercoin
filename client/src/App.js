@@ -7,7 +7,7 @@ import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
 import Background from './components/background';
 import About from './components/about';
-import Sale from './components/sale';
+import Landing from './components/landing';
 import Header from './components/header';
 import Footer from './components/footer';
 
@@ -35,7 +35,7 @@ const App = () => {
                   </Route>
 
                   <Route path="/">
-                    <Sale />
+                    <Landing />
                   </Route>
                 </Switch>
                 

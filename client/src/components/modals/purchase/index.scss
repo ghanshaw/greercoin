@@ -20,7 +20,6 @@
 
         .quantity, .price {
             height: 80px;
-            // padding: 1rem;
             border: 1px solid $grey;
             border-radius: 20px;
             
@@ -80,6 +79,7 @@
 
             &::placeholder {
                 color: $grey_text;
+                opacity: 1;
             }
         }
 

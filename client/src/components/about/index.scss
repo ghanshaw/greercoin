@@ -2,10 +2,8 @@
 
 .about {
     width: 100%;
-    // margin: 0 auto;
     overflow: scroll;
     background: radial-gradient(circle at center, $secondary 0%, rgba(0, 0, 0, 0) 45%);
-    // margin-bottom: 20px;
     position: relative;
     overflow: hidden;
 
@@ -26,12 +24,17 @@
     h3 {
         font-size: 30px;
         font-weight: 900;
-        // text-transform: uppercase;
     }
 
     li {
         line-height: 2;
         font-weight: bold;
+        font-size: 20px;
+    }
+
+    a {
+        font-weight: bold;
+        text-decoration: underline;
     }
 
     
@@ -64,17 +67,6 @@
         .about-content {
             width: 60%;
             padding: 120px 0px 160px 0px;
-            // display: flex;
-            // justify-content: flex-start;
-            // align-items: center;
-            // flex-direction: column;
-
-            // p, h3, li, ul, ol {
-            //     text-align: left;
-            //     width: 100%;
-            // }
-
-
         }
 
         .camel {

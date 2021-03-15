@@ -1,16 +1,16 @@
 const GreerCoin = artifacts.require("GreerCoin");
-const settings = require('../constants/settings');
+const constants = require('../constants');
 
 contract("GreerCoin", (accounts) => {    
     let _transferValue = 2500;
     let _allowance = 100;
 
     let tokenInstance;
-    const name = settings.name;
-    const symbol = settings.symbol;
-    const standard = settings.standard;
-    const decimals = settings.decimals;    
-    const initialSupply = settings.test.initial_supply;
+    const name = constants.name;
+    const symbol = constants.symbol;
+    const standard = constants.standard;
+    const decimals = constants.decimals;    
+    const initialSupply = constants.test.initial_supply;
 
     it("intializes contract with the correct values", function() {
         return GreerCoin.deployed().then((instance) => {

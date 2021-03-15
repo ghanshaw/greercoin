@@ -4,11 +4,11 @@
     position: relative;
     overflow: hidden;
     height: 100%;
+    // background: radial-gradient(circle at center, $secondary 0%, rgba(0, 0, 0, 0) 45%);
 
 
     // Blurry scrolling effect
     &.smDown:after {
-        // display: none;
         content:'';
         width:100%;
         height:100%;    
@@ -74,6 +74,10 @@
             padding-top: 50px;
             position: absolute;
             top: 0;
+
+            @media (max-height: 800px) {
+                padding-top: 0px;
+            }
             
             img {
                 margin-right: 5px;
@@ -156,6 +160,7 @@
                 color: white;
                 margin: 10px 0px;
                 line-height: 1.4;
+                font-weight: 600;
 
                 &.disclaimer {
                     margin-top: 20px;
@@ -168,7 +173,6 @@
 
         .sale-action {
             width: 50%;
-            // padding: 70px;
             
             .content {
                 background: white;

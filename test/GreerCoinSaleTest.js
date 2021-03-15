@@ -1,21 +1,21 @@
-const GreerCoinIco = artifacts.require("GreerCoinIco");
+const GreerCoinSale = artifacts.require("GreerCoinSale");
 const GreerCoin = artifacts.require("GreerCoin");
-const settings = require('../constants/settings');
+const constants = require('../constants');
 
-contract("GreerCoinIco", (accounts) => {
+contract("GreerCoinSale", (accounts) => {
     let tokenSaleContract;
     let tokenContract;
 
     const tokenPurchase = 10;
     const admin = accounts[0];
     const buyer = accounts[1];
-    const args = settings.test;
+    const args = constants.test;
     const tokenPrice = args.token_price;
     const initialSupply = args.initial_supply;
     const icoSupply = args.ico_supply;
 
     it("initialized token sale contract with correct values", function() {
-        return GreerCoinIco.deployed().then((instance) => {
+        return GreerCoinSale.deployed().then((instance) => {
             tokenSaleContract = instance;
             return tokenSaleContract.address;
         })
@@ -36,7 +36,7 @@ contract("GreerCoinIco", (accounts) => {
     it("facilitates token buying", function() {
         return GreerCoin.deployed().then((instance) => {
             tokenContract = instance;
-            return GreerCoinIco.deployed();
+            return GreerCoinSale.deployed();
         })
         .then((instance) => {
             tokenSaleContract = instance;
@@ -103,7 +103,7 @@ contract("GreerCoinIco", (accounts) => {
 
         return GreerCoin.deployed().then((instance) => {
             tokenContract = instance;
-            return GreerCoinIco.deployed();
+            return GreerCoinSale.deployed();
         })
         .then((instance) => {
             tokenSaleContract = instance;
@@ -121,8 +121,17 @@ contract("GreerCoinIco", (accounts) => {
             return tokenContract.balanceOf(admin);
         })
         .then(balance => {
-            // Confirm that balance of contract was sent to admin
+            // Confirm that token balance was sent to admin
             assert.equal(initialSupply - tokenPurchase, balance.toNumber());
+
+            // Assert that contract has no ETH balance
+            return web3.eth.getBalance(tokenSaleContract.address);
         })
+        .then(balance => {            
+            // Assert that contract has no balance
+            // console.log(balance);
+            assert.equal(balance, 0)
+        })
+
     })
 });

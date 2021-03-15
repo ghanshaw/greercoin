@@ -9,7 +9,7 @@ import classnames from 'classnames';
 
 // Contract ABIs
 import GreerCoinContract from "../../contracts/GreerCoin.json";
-import GreerCoinIcoContract from "../../contracts/GreerCoinIco.json";
+import GreerCoinSaleContract from "../../contracts/GreerCoinSale.json";
 
 // Components
 import Button from '../button';
@@ -43,13 +43,13 @@ export default (props) => {
 
     // Contract state
     const [ greerCoin, setGreerCoin ] = useState(null);
-    const [ greerCoinIco, setGreerCoinIco ] = useState(null);
+    const [ greerCoinSale, setGreerCoinSale ] = useState(null);
     const [ networkName, setNetworkName ] = useState("");
     const [ networkId, setNetworkId ] = useState(null);
     const [ tokenPrice, setTokenPrice ] = useState(0);
     const [ tokenPriceETH, setTokenPriceETH ] = useState(0);
     const [ tokensSold, setTokensSold ] = useState(0);
-    const [ tokensAvailableIco, setTokensAvailableIco ] = useState(0);
+    const [ tokensAvailableSale, setTokensAvailableSale ] = useState(0);
     const [ tokensAvailableUser, setTokensAvailableUser ] = useState(0);
     const [ intialTokenSupply, setIntialTokenSupply ] = useState(0);   
 
@@ -115,19 +115,19 @@ export default (props) => {
                 deployedNetwork && deployedNetwork.address,
             );
 
-            // Get GreerCoinIco contract instance
-            deployedNetwork = GreerCoinIcoContract.networks[networkId];
-            const greerCoinIco = new web3.eth.Contract(
-                GreerCoinIcoContract.abi,
+            // Get GreerCoinSale contract instance
+            deployedNetwork = GreerCoinSaleContract.networks[networkId];
+            const greerCoinSale = new web3.eth.Contract(
+                GreerCoinSaleContract.abi,
                 deployedNetwork && deployedNetwork.address,
             );
 
             setGreerCoin(greerCoin);
-            setGreerCoinIco(greerCoinIco);
+            setGreerCoinSale(greerCoinSale);
             setLoadContractsFlag(false);
 
             console.log("GreerCoin address: " + greerCoin.options.address);
-            console.log("GreerCoinSale address: " + greerCoinIco.options.address);
+            console.log("GreerCoinSale address: " + greerCoinSale.options.address);
         } catch (error) {
             // Catch any errors for any of the above operations.
             console.error(error);
@@ -137,28 +137,28 @@ export default (props) => {
     // Load contract data
     const loadData = async () => { 
 
-        let greerCoinIcoAddr = greerCoinIco.options.address;
+        let greerCoinSaleAddr = greerCoinSale.options.address;
         let greerCoinAddr = greerCoin.options.address;
 
         // Contract is not available on blockchain
-        if (!greerCoinAddr || !greerCoinIcoAddr) return;
+        if (!greerCoinAddr || !greerCoinSaleAddr) return;
 
         // Get the value from the contract to prove it worked.
         const totalSupplyRes = await greerCoin.methods.totalSupply().call();
-        let tokenPriceRes = await greerCoinIco.methods.tokenPrice().call();
-        let tokensSoldRes = await greerCoinIco.methods.tokensSold().call();
-        let tokensAvailableICORes = await greerCoin.methods.balanceOf(greerCoinIcoAddr).call();
+        let tokenPriceRes = await greerCoinSale.methods.tokenPrice().call();
+        let tokensSoldRes = await greerCoinSale.methods.tokensSold().call();
+        let tokensAvailableSaleRes = await greerCoin.methods.balanceOf(greerCoinSaleAddr).call();
         let tokensAvailableUserRes = await greerCoin.methods.balanceOf(account).call();
     
         tokensSoldRes = Number.parseFloat(tokensSoldRes)
-        tokensAvailableICORes = Number.parseFloat(tokensAvailableICORes)
+        tokensAvailableSaleRes = Number.parseFloat(tokensAvailableSaleRes)
         tokensAvailableUserRes = Number.parseFloat(tokensAvailableUserRes);
 
         // Update state with the result.
         setTokenPrice(tokenPriceRes);
         setTokensSold(Number.parseFloat(tokensSoldRes));
-        setIntialTokenSupply(tokensSoldRes + tokensAvailableICORes);
-        setTokensAvailableIco(tokensAvailableICORes);
+        setIntialTokenSupply(tokensSoldRes + tokensAvailableSaleRes);
+        setTokensAvailableSale(tokensAvailableSaleRes);
         setTokensAvailableUser(Number.parseFloat(tokensAvailableUserRes));
         setTokenPriceETH(web3.utils.fromWei(tokenPriceRes))
         setLoadDataFlag(false);
@@ -238,9 +238,9 @@ export default (props) => {
 
     // Load contract data
     useEffect(() => {
-        if (!greerCoin || !greerCoinIco || !account || !loadDataFlag) return;
+        if (!greerCoin || !greerCoinSale || !account || !loadDataFlag || !web3) return;
         loadData();
-    }, [ greerCoin, greerCoinIco, account, loadDataFlag ]);
+    }, [ greerCoin, greerCoinSale, account, loadDataFlag ]);
 
 
     // Get account
@@ -280,14 +280,14 @@ export default (props) => {
     // Detect sell and transfer events
     useEffect(() => {
 
-        if (!greerCoin || !greerCoinIco ) return;
+        if (!greerCoin || !greerCoinSale ) return;
 
-        let greerCoinIcoAddr = greerCoinIco.options.address;
+        let greerCoinSaleAddr = greerCoinSale.options.address;
         let greerCoinAddr = greerCoin.options.address;
 
-        if (!greerCoinAddr || !greerCoinIcoAddr) return;
+        if (!greerCoinAddr || !greerCoinSaleAddr) return;
 
-        greerCoinIco.events.Sell()
+        greerCoinSale.events.Sell()
             .on('data', (event) => {
                 console.log("SELL EVENT")
                 setLoadDataFlag(true);
@@ -302,7 +302,7 @@ export default (props) => {
             })
             .on('error', (err) => console.error(err));
 
-    }, [ greerCoin, greerCoinIco ]);
+    }, [ greerCoin, greerCoinSale ]);
 
     const getConversionMsg = () => {
         let message = `1 GRC = ${tokenPriceETH} ETH`;
@@ -343,7 +343,6 @@ export default (props) => {
             )
         }
 
-        console.log("web3: " + web3);
         if (!web3) {
             return <>{icon}{noMetaMask}</>;
         } else if (!account) {
@@ -352,11 +351,6 @@ export default (props) => {
             return <>{icon}{wrongNetwork}</>
         }
 
-        return null;
-    }
-
-    const redirect = (link) => {
-        window.location.href = link; 
         return null;
     }
 
@@ -374,7 +368,7 @@ export default (props) => {
         // No MetaMask
         if (!web3) {
             cta ="Install MetaMask"
-            onClick=() => { redirect(metamask) }
+            onClick=() => { window.open(metamask, '_blank'); }
         } else if (!account) {
             cta = "Connect MetaMask"
             onClick = triggerConnectWeb3;
@@ -401,7 +395,7 @@ export default (props) => {
 
     let status = coinStatus.ACTIVE;
     const now = new Date();
-    if (web3 && tokensSold && tokensAvailableIco === 0) {
+    if (web3 && tokensSold && tokensAvailableSale === 0) {
         status = coinStatus.DEPLETED;
     } else if ((endDate - now) < 0) {
         status = coinStatus.EXPIRED;
@@ -430,7 +424,7 @@ export default (props) => {
                     
                     <div className="sale-description"> 
                         <h1 className="title"><span>GreerCoin</span> ICO</h1>
-                        <p><b>GreerCoin (GRC)</b> is an ERC20 compliant Ethereum token created by me as a demo. Feel free to try it out by buying some coins.</p>
+                        <p>GreerCoin (GRC) is an ERC20 compliant Ethereum token created by me as a demo. Feel free to try it out by buying some coins.</p>
 
                         <p className="disclaimer">GreerCoin was created soley for demonstration purposes and does not have any real monetary value. Only spend ETH you don't need.</p>
                     </div>
@@ -468,7 +462,7 @@ export default (props) => {
                                     {networkName ? <p className="network">{`${networkName} Network`}</p> : <p>No connection...</p>}
                                 </div>
                                
-                                <ProgressBar tokensSold={tokensSold} tokensAvailableIco={tokensAvailableIco} />
+                                <ProgressBar tokensSold={tokensSold} tokensAvailableSale={tokensAvailableSale} />
                                 
                                 <div className="token-count">
                                     <div className="tokens-owned">
@@ -481,7 +475,7 @@ export default (props) => {
                                         onMouseLeave={() => { setMsgHover(false) }}>
                                         {msgHover ? 
                                             <p>{`${tokensSold.toLocaleString()} / ${intialTokenSupply.toLocaleString()} sold`}</p> :
-                                            <p>{`${tokensAvailableIco.toLocaleString()} GRC left`}</p> }
+                                            <p>{`${tokensAvailableSale.toLocaleString()} GRC left`}</p> }
                                     </div>
                                 </div>
                             </div>
@@ -512,9 +506,10 @@ export default (props) => {
                                                 setTxHash={setTxHash}
                                                 account={account}
                                                 greerCoin={greerCoin} 
-                                                greerCoinIco={greerCoinIco} 
-                                                tokensAvailableIco={tokensAvailableIco}
+                                                greerCoinSale={greerCoinSale} 
+                                                tokensAvailableSale={tokensAvailableSale}
                                                 tokenPrice={tokenPrice}
+                                                tokenPriceETH={tokenPriceETH}
                                                 setTokenPrice={setTokenPrice} />} />}                                    
                             </div>
 
