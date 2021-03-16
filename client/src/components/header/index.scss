@@ -9,6 +9,12 @@
     background: none;
     height: 80px;
 
+    a {
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
     .brand, .link {
         color: white;
         display: flex;

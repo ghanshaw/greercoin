@@ -14,10 +14,11 @@ module.exports = {
     },
     mainnet: {
       provider: function() {
-        return new HDWalletProvider(process.env.MNENOMIC_MAINNET, constants.infura.endpoint.mainnet + process.env.INFURA_API_KEY)
+        return new HDWalletProvider(process.env.MNENOMIC_MAINNET, constants.infura.endpoint.mainnet + process.env.INFURA_API_KEY, 0)
       },
       network_id: 1,
-      gasPrice: 80000000000
+      gas: 150000,
+      gasPrice: 110000000000,
     },
     ropsten: {
       provider: function() {

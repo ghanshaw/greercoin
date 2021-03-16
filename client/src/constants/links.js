@@ -21,6 +21,8 @@ const infura = "https://infura.io/";
 const web3 = "https://web3js.readthedocs.io/en/v1.3.4/";
 const etherFacet = "https://faucet.ropsten.be/";
 const coinbase = "https://www.coinbase.com/";
+const insularG = "https://en.wikipedia.org/wiki/Insular_G";
+const customToken = "https://metamask.zendesk.com/hc/en-us/articles/360015489031";
 
 export {
     github,
@@ -36,5 +38,7 @@ export {
     infura,
     etherFacet,
     coinbase,
+    insularG,
+    customToken,
     web3
 }

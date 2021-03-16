@@ -28,7 +28,7 @@ const PurchaseModal = (props) => {
 
     const getEthValue = () => {
         if (!units || errorMessage) return <span className="placeholder">{(0).toFixed(2)}</span>;
-        return (Math.max(units * tokenPriceETH, 0)).toFixed(4);
+        return (Math.max(units * tokenPriceETH, 0)).toFixed(5);
     }
 
     const updateUnits = (event) => {

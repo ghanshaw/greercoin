@@ -22,12 +22,12 @@ module.exports = function(deployer, network) {
   const icoSupply = args.ico_supply;
 
   // Deploy GreerCoin
-  deployer.deploy(GreerCoin, initialSupply, name, symbol, decimals, standard)
+  deployer.deploy(GreerCoin, initialSupply, name, symbol, decimals, standard, { gas: 1200000 })
     .then((instance) => {
       greerCoinInstance = instance;
 
       // Deploy GreerCoinSale
-      return deployer.deploy(GreerCoinSale, GreerCoin.address, tokenPrice)
+      return deployer.deploy(GreerCoinSale, GreerCoin.address, tokenPrice, { gas: 1000000 })
     })
     .then((instance) => {
       greerCoinSaleInstance = instance;

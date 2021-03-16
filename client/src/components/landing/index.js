@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import './index.scss';
-import { cryptocompare, metamask } from '../../constants/links';
+import { cryptocompare, metamask } from 'constants/links';
 
 import axios from 'axios';
 import Web3 from "web3";
