@@ -52,6 +52,10 @@
             width: 100%;
             padding-top: 140px;
         }
+
+        &:before, &:after {
+            background: none;
+        }
     }
     
 

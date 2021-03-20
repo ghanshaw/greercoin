@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import './index.scss';
+import LayoutContext from 'context/layoutContext';
+
+import classnames from 'classnames';
 
 export default (props) => {
     const { endDate } = props;
+    const layout = useContext(LayoutContext);
     const [ currDate, setCurrDate ]  = useState(new Date());
 
     const diff = Math.abs(endDate - currDate);    
@@ -36,9 +40,11 @@ export default (props) => {
         return () => clearTimeout(timer);
     }, [])
 
+    const countdownCss = classnames('countdown', layout);
+
     return (
         <div className="countdown_wrapper">
-            <div className="countdown">
+            <div className={countdownCss}>
                 <div className="days counter_box">
                     <div className="value">{getDays()}</div>
                     <div className="text">DAYS</div>

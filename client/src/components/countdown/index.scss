@@ -14,19 +14,18 @@
         flex-direction: row;
         justify-content: space-around;
     
-        .num {
-    
-        }
+        
     
         .counter_box {
             text-align: center;
             display: inline;
-            font-size: 40px;
-    
+            
+            
             .value {
                 margin-bottom: 10px;
                 font-weight: 700;
                 font-family: 'Nunito';
+                
             }
     
             .text {
@@ -34,8 +33,20 @@
                 font-weight: 500;
             }
 
+            .value, .separator {
+                font-size: 40px;
+            }
+
             .value, .text, .separator {
                 color: $black_text;
+            }
+        }
+
+        &.smDown {
+            .counter_box {
+                .value, .separator {
+                    font-size: 33px;
+                }
             }
         }
     }

@@ -15,7 +15,7 @@ export default () => {
 
     const aboutCss = classnames('about', layout);
 
-    const mainnetAddr = "0x0" || GreerCoinContract.networks[networkIds.MAINNET].address;
+    const mainnetAddr = GreerCoinContract.networks[networkIds.MAINNET].address;
     const ropstenAddr = GreerCoinContract.networks[networkIds.ROPSTEN].address;
 
     const mainnetUrl = links.etherscan.token.mainnet + mainnetAddr;
